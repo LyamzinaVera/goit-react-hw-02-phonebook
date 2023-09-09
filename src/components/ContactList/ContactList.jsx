@@ -1,47 +1,34 @@
+import React from 'react';
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import style from 'components/ContactList/ContactList.module.css'
 
-import { useDispatch, useSelector } from 'react-redux';
-import { deleteContact, fetchContacts } from 'redux/operations';
-import { selectContacts, selectStatusFilter } from 'redux/selectors';
-
-import css from './ContactList.module.css';
-
-export const ContactList = () => {
-  const dispatch = useDispatch();
-  const contacts = useSelector(selectContacts);
-  const filtered = useSelector(selectStatusFilter);
-
-  const normalizedFilter = filtered.toLowerCase();
-  const filteredContacts = contacts.filter(({ name }) =>
-    name.toLowerCase().includes(normalizedFilter)
-  );
-
-  useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
-
-  return (
-    <ul className={css.contactList}>
-      {filteredContacts.map(({ id, name, number }) => (
-        <li key={id} className={css.contactItem}>
-          <p className={css.contactText}>
-            {name}: {number}
-          </p>
-          <button
-            className={css.contactListBtn}
-            type="button"
-            onClick={() => dispatch(deleteContact(id))}
-          >
-            Delete
-          </button>
-        </li>
-      ))}
+const ContactsList = ({ contacts, remoteContact }) => (
+    <ul className={style.contacts__list}>
+        {contacts.map(({ id, name, number }) => (
+            <li className={style.contacts__item} key={id}>
+                <p>
+                    {name}: {number}
+                </p>
+                <button
+                    type="button"
+                    onClick={() => remoteContact(id)}
+                >
+                    Delete
+                </button>
+            </li>
+        ))}
     </ul>
   );
-};
-
-ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(PropTypes.string),
-  onDeleteContact: PropTypes.func,
-};
+  
+  ContactsList.propTypes = {
+    contacts: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        number: PropTypes.string.isRequired,
+      })
+    ),
+    remoteContact: PropTypes.func.isRequired,
+  };
+  
+  export default ContactsList;
