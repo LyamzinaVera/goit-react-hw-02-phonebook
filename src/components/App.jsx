@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import shortid from 'shortid';
 
+import style from './App.module.css'
 import ContactForm from './ContactForm/ContactForm.jsx';
 import ContactsList from './ContactList/ContactList.jsx';
 import Filter from './Filter/Filter.jsx';
@@ -47,7 +48,7 @@ export class App extends Component{
 
     return (
     
-  <div>
+  <div className={style.container}>
     <h1>Phonebook</h1>
     <ContactForm onSubmit={this.addContact} />
     <h2>Contacts</h2>
